@@ -27,5 +27,10 @@ validationPromise.then(
         }
         alert(str + "----------------- \n" + response)
     },
-    error => alert("Rejected: \n" + error.message)
+    error => {
+        console.log("Rejected: \n");
+        error.forEach(function(item) {
+        console.log(item.key + " : " + item.value + " : " + item.mes);
+        });
+    }
 );

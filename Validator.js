@@ -127,21 +127,22 @@ function Validator() {
 //Prototype of the method of validation of values and rules
 Validator.prototype.validate = function(values, rules) {
     return new Promise(function(resolve, reject) {
-        var mes = "";
+        var errorMas = [];
         for (var key in rules) {
-              rules[key].validationFunctions.forEach(function(item, i) {
-                    //alert(i + item);
-                    rules[key].validationFunctions[i] = item(values[key]);
-                    //alert(rules[key].validationResults[i].isValid);
+              rules[key].validationFunctions.forEach(function(func, i) {
+                    var result = func(values[key]);
+                    if (result.isValid !== true) {
+                        var error = {
+                            key : key,
+                            value : values[key],
+                            mes : result.errorMessage
+                        };
+                        errorMas.push(error);
+                    }
               });
-            rules[key].validationFunctions.forEach(function(item) {
-                if (item.isValid !== true) {
-                    mes += key + " : " + values[key] + " " + item.errorMessage + "\n";
-                }
-            });
         }
-        if (mes !== "") {
-            reject(new Error(mes));
+        if (errorMas.length > 0) {
+            reject(errorMas);
         }
         resolve("Validation is okay!");
     });
