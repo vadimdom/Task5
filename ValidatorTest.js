@@ -25,7 +25,7 @@ validationPromise.then(
             }
             str += person[key] +"\n";
         }
-        alert(str + "----------------- \n" + response)
+        alert(str + "----------------- \n" + "Okay!")
     },
     error => {
         console.log("Rejected: \n");
