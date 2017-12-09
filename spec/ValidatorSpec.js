@@ -13,13 +13,12 @@ describe("Validator", function() {
         var validationPromise = validator.validate(person, person.validationRules);
         
         validationPromise.then(
-            resolve => {
+            () => {
                 var test = true;
                 expect(test).toBe(true);
+                done();
             }
         );
-
-        done();
     });
 
 
@@ -37,15 +36,18 @@ describe("Validator", function() {
         
         validationPromise.then(
             null,
-            reject => {
-                expect(reject.length).toEqual(1);
-                expect(reject[0].key).toEqual("name");
-                expect(reject[0].value).toEqual("");
-                expect(reject[0].mes).toEqual(" is required");
+            error => {
+                var error1 = {
+                    key : "name",
+                    value : "",
+                    mes : " is required"
+                }
+                var errorArray= [];
+                errorArray.push(error1);
+                expect(errorArray).toEqual(error);
+                done();
             }
         );
-
-        done();
     });
 
     it("true Validator age : '21' isInt()", function(done) {
@@ -61,13 +63,12 @@ describe("Validator", function() {
         var validationPromise = validator.validate(person, person.validationRules);
         
         validationPromise.then(
-            resolve => {
+            () => {
                 var test = true;
                 expect(test).toBe(true);
+                done();
             }
         );
-
-        done();
     });
 
     it("false Validator age : '21bcxj' isInt()", function(done) {
@@ -84,15 +85,18 @@ describe("Validator", function() {
             
         validationPromise.then(
             null,
-            reject => {
-                expect(reject.length).toEqual(1);
-                expect(reject[0].key).toEqual("age");
-                expect(reject[0].value).toEqual("21bcxj");
-                expect(reject[0].mes).toEqual(" is not an int");
+            error => {
+                var error1 = {
+                    key : "age",
+                    value : "21bcxj",
+                    mes : " is not an int"
+                }
+                var errorArray= [];
+                errorArray.push(error1);
+                expect(errorArray).toEqual(error);
+                done();
             }
         );
-        
-        done();
     });
 
     it("true Validator age : '21' min(18)", function(done) {
@@ -108,13 +112,12 @@ describe("Validator", function() {
         var validationPromise = validator.validate(person, person.validationRules);
                 
         validationPromise.then(
-            resolve => {
+            () => {
                 var test = true;
                 expect(test).toBe(true);
+                done();
             }
         );
-
-        done();
     });
 
     it("false Validator age : '21' min(25)", function(done) {
@@ -131,15 +134,18 @@ describe("Validator", function() {
                     
         validationPromise.then(
             null,
-            reject => {
-                expect(reject.length).toEqual(1);
-                expect(reject[0].key).toEqual("age");
-                expect(reject[0].value).toEqual("21");
-                expect(reject[0].mes).toEqual(" is less than " + 25);
+            error => {
+                var error1 = {
+                    key : "age",
+                    value : "21",
+                    mes : " is less than " + 25
+                }
+                var errorArray= [];
+                errorArray.push(error1);
+                expect(errorArray).toEqual(error);
+                done();
             }
         );
-
-        done();
     });
 
     it("true Validator name : 'Vadim' isRequired().minLength(2), age : '21' isInt().max(60)", function(done) {
@@ -157,13 +163,12 @@ describe("Validator", function() {
         var validationPromise = validator.validate(person, person.validationRules);
                         
         validationPromise.then(
-            resolve => {
+            () => {
                 var test = true;
                 expect(test).toBe(true);
+                done();
             }
         );
-
-        done();
     });
 
     it("false Validator name : 'Vadim' isRequired().minLength(7), age : '21' isInt().max(20)", function(done) {
@@ -182,19 +187,23 @@ describe("Validator", function() {
                             
         validationPromise.then(
             null,
-            reject => {
-                expect(reject.length).toEqual(2);
-                expect(reject[0].key).toEqual("name");
-                expect(reject[0].value).toEqual("Vadim");
-                expect(reject[0].mes).toEqual(" is shotter than " + 7);
-                expect(reject[1].key).toEqual("age");
-                expect(reject[1].value).toEqual("21");
-                expect(reject[1].mes).toEqual(" is bigger than " + 20);
+            error => {
+                var error1 = {
+                    key : "name",
+                    value : "Vadim",
+                    mes : " is shotter than " + 7
+                }
+                var error2 = {
+                    key : "age",
+                    value : "21",
+                    mes : " is bigger than " + 20
+                }
+                var errorArray= [];
+                errorArray.push(error1);
+                errorArray.push(error2);
+                expect(errorArray).toEqual(error);
+                done();
             }
         );
-
-        done();
     });
 });
-
-
